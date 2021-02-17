@@ -1,0 +1,19 @@
+@import url('../../css/custom-vars.css');
+
+.spinner {
+    background-color: var(--custom-background);
+    z-index: 300;
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.spinner p {
+    margin-top: 20px;
+}

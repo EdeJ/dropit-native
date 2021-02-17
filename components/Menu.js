@@ -2,10 +2,11 @@ import React from 'react'
 import { View, Text, StyleSheet, Dimensions, Button, TouchableOpacity, Image } from 'react-native'
 import colors from '../config/colors'
 import { resetLocalUser } from '../helpers/helperFunctions'
+import TopHeader from './TopHeader'
 
 let { width, height } = Dimensions.get('window')
 
-function Menu({ setUser, setShowMenu }) {
+function Menu({ setUser, setShowMenu, navigation }) {
 
     const logout = () => {
         resetLocalUser()
@@ -24,7 +25,15 @@ function Menu({ setUser, setShowMenu }) {
             <View style={styles.menuItem}>
                 <Text
                     style={styles.menuLink}
-                    onPress={logout}
+                    onPress={() => navigation.navigate('SignIn', { name: 'SignIn' })}
+                >
+                    Sign in
+                </Text>
+            </View>
+            <View style={styles.menuItem}>
+                <Text
+                    style={styles.menuLink}
+                    onPress={() => navigation.navigate('MyProfile', { name: 'MyProfile' })}
                 >
                     My profile
                 </Text>
@@ -45,6 +54,7 @@ export default Menu
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: colors.customBackground,
         position: 'absolute',
         flex: 1,
         justifyContent: 'center',

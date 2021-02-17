@@ -9,16 +9,16 @@ export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState()
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    fetchLocalUser()
-    async function fetchLocalUser() {
-      const data = await getLocalUser()
-      // console.log(data.username)
-      setUser(data)
-    }
+  //   fetchLocalUser()
+  //   async function fetchLocalUser() {
+  //     const data = await getLocalUser()
+  //     // console.log(data.username)
+  //     setUser(data)
+  //   }
 
-  }, [])
+  // }, [])
 
   function isAdmin() {
     if (user) {
@@ -26,43 +26,43 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const login = (username, password) => {
+  const login = async (username, password) => {
     console.log("login function")
 
-    // try {
-    //   const response = await axiosConfig.post('api/auth/signin', {
-    //     "username": username,
-    //     "password": password
-    //   })
+    try {
+      const response = await axiosConfig.post('api/auth/signin', {
+        "username": username,
+        "password": password
+      })
 
-    let newUser = {}
-    if (username === 'emieldejong@xs4all.nl' && password === 'password') {
-      // response.data.id = 1
-      // response.data.username = 'emieldejong@xs4all.nl'
-      // response.data.accessToken = 'Bearer temp token'
-      // response.data.roles = ['ROLE_USER']
+      // let newUser = {}
+      // if (username === 'emieldejong@xs4all.nl' && password === 'password') {
+      //   // response.data.id = 1
+      //   // response.data.username = 'emieldejong@xs4all.nl'
+      //   // response.data.accessToken = 'Bearer temp token'
+      //   // response.data.roles = ['ROLE_USER']
 
-      newUser.userId = 1
-      newUser.username = 'emieldejong@xs4all.nl'
-      newUser.accessToken = 'Bearer secretToken'
-      newUser.roles = ['ROLE_USER']
+      //   newUser.userId = 1
+      //   newUser.username = 'emieldejong@xs4all.nl'
+      //   newUser.accessToken = 'Bearer secretToken'
+      //   newUser.roles = ['ROLE_USER']
+      // }
+
+      const newUser = {}
+      newUser.userId = response.data.id
+      newUser.username = response.data.username
+      newUser.accessToken = 'Bearer ' + response.data.accessToken
+      newUser.roles = response.data.roles
+
+      setUser(newUser)
+      setLocalUser(newUser)
+
+      return true
+
+    } catch (error) {
+      console.error(error)
+      return false
     }
-
-    // const newUser = {}
-    // newUser.userId = response.data.id
-    // newUser.username = response.data.username
-    // newUser.accessToken = 'Bearer ' + response.data.accessToken
-    // newUser.roles = response.data.roles
-
-    setUser(newUser)
-    setLocalUser(newUser)
-
-    return true
-
-    // } catch (error) {
-    console.error(error)
-    return false
-    // }
 
   }
 

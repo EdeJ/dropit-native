@@ -2,8 +2,7 @@ import axios from 'axios'
 import { getAccessToken } from './helperFunctions'
 
 export const axiosConfig = axios.create({
-    baseURL: 'http://localhost:8080/',
-    headers: { Authorization: getAccessToken() }
+    baseURL: 'https://dropit-api.herokuapp.com/'
 })
 
 export const getAllUsers = async () => {
@@ -15,8 +14,11 @@ export const getAllUsers = async () => {
 }
 
 export const getUserById = async (userId) => {
+
     try {
-        return await axiosConfig.get(`/api/users/${userId}`)
+        return await axiosConfig.get(`/api/users/${userId}`,
+            { headers: { Authorization: await getAccessToken() } }
+        )
     } catch (error) {
         console.log(error)
     }

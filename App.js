@@ -1,16 +1,23 @@
+import 'react-native-gesture-handler'
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import colors from './config/colors'
-import Login from './components/Login'
+import SignIn from './components/SignIn'
 import { AuthProvider } from './hooks/authentication'
 import { getLocalUser } from './helpers/helperFunctions'
 import Menu from './components/Menu'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import Home from './Home'
+import MyProfile from './screens/MyProfile'
 
 export default function App() {
 
   const [user, setUser] = useState()
-  const [showMenu, setShowMenu] = useState(false)
+  // const [showMenu, setShowMenu] = useState(false)
+
+  const Stack = createStackNavigator()
 
   useEffect(() => {
 
@@ -26,48 +33,24 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <SafeAreaView style={styles.container}>
-        {user && <Text>{user.username}</Text>}
-        {showMenu ? (
-          <Menu
-            setUser={setUser}
-            setShowMenu={setShowMenu}
-          />
-        ) : (
-            <View>
-              <View style={styles.header}>
-                <Image source={require('./assets/dropit-logo.png')} style={styles.logo} />
-                <View style={styles.tools}>
-                  <TouchableOpacity
-                    style={styles.menu}
-                    onPress={() => setShowMenu(true)}
-                  >
-                    <Image source={require('./assets/user-icon.png')} style={styles.userIcon} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.menu}
-                    onPress={() => setShowMenu(true)}
-                  >
-                    <Image source={require('./assets/menu-icon.png')} style={styles.menu} />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              {user ? (
-                <View>
-                  <Text>Welcome: {user.username}</Text>
-                </View>
-              ) : (
-                  <Login
-                    setUser={setUser}
-                  />
-                )}
-              <Text>Dropit app test</Text>
-              <StatusBar style="auto" />
-            </View>
-          )
-        }
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{
+          headerShown: false
+        }}>
 
-      </SafeAreaView>
+          <Stack.Screen name="Home" component={Home} />
+
+          <Stack.Screen
+            name="SignIn"
+            component={SignIn}
+          />
+
+          <Stack.Screen name="Menu" component={Menu} />
+          <Stack.Screen name="MyProfile" component={MyProfile} />
+
+
+        </Stack.Navigator>
+      </NavigationContainer>
     </AuthProvider>
   )
 }
