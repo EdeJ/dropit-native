@@ -1,7 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { Platform } from 'react-native'
 
+// if (Platform.OS === 'android') {
+//     const localStorage = AsyncStorage
+// }
+// if (Platform.OS === 'ios') {
+//     const localStorage = AsyncStorage
+// }
 
-const localStorage = AsyncStorage;
+const localStorage = AsyncStorage
 
 export async function getLocalUser() {
     if (await localStorage.getItem("user")) {
@@ -23,28 +30,3 @@ export async function resetLocalUser() {
     await localStorage.removeItem('user')
 
 }
-
-
-
-// export function getLocalUser() {
-//     if (localStorage.getItem("user")) {
-//         return JSON.parse(localStorage.getItem("user"))
-//     }
-// }
-
-// export function setLocalUser(user) {
-//     localStorage.setItem("user", JSON.stringify(user))
-// }
-
-// export function getAccessToken() {
-//     if (localStorage.getItem("user")) {
-//         return JSON.parse(localStorage.getItem("user")).accessToken
-//     }
-// }
-
-// export function resetLocalUser() {
-//     localStorage.removeItem('user')
-
-// }
-
-

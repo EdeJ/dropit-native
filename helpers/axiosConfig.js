@@ -34,7 +34,9 @@ export const updateUser = async (user) => {
 
 export const getAllDemos = async () => {
     try {
-        return await axiosConfig.get('/api/demos')
+        return await axiosConfig.get('/api/demos',
+            { headers: { Authorization: await getAccessToken() } }
+        )
     } catch (error) {
         console.log(error)
     }

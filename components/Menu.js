@@ -1,47 +1,62 @@
 import React from 'react'
-import { View, Text, StyleSheet, Dimensions, Button, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native'
 import colors from '../config/colors'
 import { resetLocalUser } from '../helpers/helperFunctions'
-import TopHeader from './TopHeader'
+import { useAuthentication } from '../hooks/authentication'
 
-let { width, height } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 function Menu({ setUser, setShowMenu, navigation }) {
 
-    const logout = () => {
-        resetLocalUser()
-        setUser(null)
-        setShowMenu(false)
+    const { user, logout } = useAuthentication()
+
+    const signOut = () => {
+        logout()
+        navigation.navigate('Home')
     }
 
     return (
         <View style={styles.container}>
             <TouchableOpacity
                 style={styles.closeBtn}
-                onPress={() => setShowMenu(false)}
+                onPress={() => navigation.goBack()}
             >
-                <Image source={require('../assets/close-btn.png')} />
+                <Image style={styles.closeIcon} source={require('../assets/close-btn.png')} />
             </TouchableOpacity>
-            <View style={styles.menuItem}>
-                <Text
-                    style={styles.menuLink}
-                    onPress={() => navigation.navigate('SignIn', { name: 'SignIn' })}
-                >
-                    Sign in
+            {!user && (
+                <View style={styles.menuItem}>
+                    <Text
+                        style={styles.menuLink}
+                        onPress={() => navigation.navigate('SignIn', { name: 'SignIn' })}
+                    >
+                        Sign in
                 </Text>
-            </View>
+                </View>
+            )}
+            {user && (
+                <>
+                    <View style={styles.menuItem}>
+                        <Text
+                            style={styles.menuLink}
+                            onPress={() => navigation.navigate('AllDemos', { name: 'AllDemos' })}
+                        >
+                            All demos
+                  </Text>
+                    </View>
+                    <View style={styles.menuItem}>
+                        <Text
+                            style={styles.menuLink}
+                            onPress={() => navigation.navigate('MyProfile', { name: 'MyProfile' })}
+                        >
+                            My profile
+                            </Text>
+                    </View>
+                </>
+            )}
             <View style={styles.menuItem}>
                 <Text
                     style={styles.menuLink}
-                    onPress={() => navigation.navigate('MyProfile', { name: 'MyProfile' })}
-                >
-                    My profile
-                </Text>
-            </View>
-            <View style={styles.menuItem}>
-                <Text
-                    style={styles.menuLink}
-                    onPress={logout}
+                    onPress={signOut}
                 >
                     Sign out
                 </Text>
@@ -66,11 +81,14 @@ const styles = StyleSheet.create({
     closeBtn: {
         position: 'absolute',
         top: 20,
-        right: 20
+        right: 20,
+    },
+    closeIcon: {
+        width: 48,
+        height: 50
     },
     menuItem: {
         width: '100%',
-        // borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: colors.customBorderBeige,
     },
@@ -79,7 +97,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         paddingLeft: 20,
         color: colors.customBrown,
-        fontWeight: 'bold',
+        fontSize: 20,
         width: width
     }
 })

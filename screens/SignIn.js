@@ -1,66 +1,54 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { Text, TextInput, View, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native'
+import { Text, TextInput, View, StyleSheet } from 'react-native'
 import colors from '../config/colors'
-import { axiosConfig } from '../helpers/axiosConfig'
-import { setLocalUser } from '../helpers/helperFunctions'
 import { useAuthentication } from '../hooks/authentication'
-import TopHeader from './TopHeader'
+import MyButton from '../components/MyButton'
+import PageTemplate from '../components/PageTemplate'
+import { getLocalUser } from '../helpers/helperFunctions'
+import Spinner from '../components/spinner/Spinner'
 
-function SignIn({ setUser, navigation }) {
+function SignIn({ navigation }) {
 
     const { control, handleSubmit, errors } = useForm()
     const [message, setMessage] = useState()
     const { user, login } = useAuthentication()
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+
+        checkLoggedIn()
+
+        async function checkLoggedIn(params) {
+            const user = await getLocalUser()
+
+            if (user) {
+                navigation.navigate('Home')
+            }
+        }
+
+
+    }, [])
 
 
     const onSubmit = async data => {
 
-        login(data.username, data.password)
+        setIsLoading(true)
+        const result = await login(data.username, data.password)
+        setIsLoading(false)
 
-        navigation.navigate('Home')
-
-        // try {
-        //     const response = await axiosConfig.post('api/auth/signin', {
-        //         "username": data.username,
-        //         "password": data.password
-        //     })
-
-        //     const newUser = {}
-        //     newUser.userId = 1
-        //     newUser.username = 'emieldejong@xs4all.nl'
-        //     newUser.accessToken = 'Bearer secretToken'
-        //     newUser.roles = ['ROLE_USER']
-
-        //     return newUser
-
-
-        // setLocalUser(user)
-        // setUser(user)
-
-
-
-        // } catch (error) {
-        //     setMessage("Incorrect username or password")
-        //     console.log(error)
-        // }
-
-
-
+        if (result) {
+            navigation.navigate('Home')
+        }
     }
 
-    // const login = async (username, password) => {
-
-
-    // }
+    if (isLoading) {
+        return <Spinner message="Signing in..." />
+    }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <StatusBar style="auto" />
-            <TopHeader navigation={navigation} />
+        <PageTemplate navigation={navigation}>
             <View style={styles.form} >
-
-                {console.log('USER = ', user)}
                 <View style={styles.formField}>
                     <Text style={styles.label}>User name</Text>
                     <Controller
@@ -96,52 +84,24 @@ function SignIn({ setUser, navigation }) {
                         rules={{ required: true }}
                         defaultValue=""
                     />
-                    {errors.password && <Text>Password is required</Text>}
+                    {errors.password && <Text style={styles.error}>Password is required</Text>}
                     {message && <Text style={styles.error}>{message}</Text>}
                 </View>
-
-
-                <View style={styles.formField}></View>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={handleSubmit(onSubmit)}
-                >
-                    <Text style={styles.btnText}>Sign in</Text>
-                </TouchableOpacity>
+                <MyButton handleClick={handleSubmit(onSubmit)}>Sign in</MyButton>
             </View>
-        </SafeAreaView>
+        </PageTemplate>
     )
 }
 
-export default SignIn
-
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: colors.customBackground,
-        // height: '100vh'
-    },
     form: {
         maxWidth: 600,
-        padding: 30
     },
     formField: {
         marginTop: 20,
     },
     label: {
         marginBottom: 10
-    },
-    button: {
-        backgroundColor: colors.customGreen,
-        height: 40,
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20
-
-    },
-    btnText: {
-        color: colors.customWhite,
-        fontWeight: 'bold'
     },
     error: {
         color: colors.customRed
@@ -156,3 +116,5 @@ const styles = StyleSheet.create({
         height: 50,
     }
 })
+
+export default SignIn
