@@ -50,14 +50,14 @@ function Menu({ setUser, setShowMenu, navigation }) {
                         >
                             My profile
                             </Text>
-                        <View style={styles.menuItem}>
-                            <Text
-                                style={styles.menuLink}
-                                onPress={signOut}
-                            >
-                                Sign out
-                </Text>
-                        </View>
+                    </View>
+                    <View style={styles.menuItem}>
+                        <Text
+                            style={styles.menuLink}
+                            onPress={signOut}
+                        >
+                            Sign out
+                        </Text>
                     </View>
                 </>
             )}
