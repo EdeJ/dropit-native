@@ -1,11 +1,31 @@
-import React from 'react'
-import { Image, StatusBar, StyleSheet, View, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Image, StyleSheet, View, TouchableOpacity } from 'react-native'
 import colors from '../config/colors'
 import { useAuthentication } from '../hooks/authentication'
 
-function Header({ navigation }) {
+function TopHeader({ navigation }) {
 
-    const { user } = useAuthentication()
+    const { getUser, isAdmin } = useAuthentication()
+    const [user, setUser] = useState()
+    // const [isMounted, setIsMounted] = useState(true)
+
+    // let isMounted = true;
+
+    useEffect(() => {
+
+        fetchUser()
+        async function fetchUser() {
+            // setIsMounted(true)
+            const user = await getUser()
+            // if (isMounted) {
+            if (user && isAdmin(user)) {
+                setUser(user)
+            }
+            // }
+        }
+
+        // return () => isMounted = false
+    }, [])
 
     return (
         <View style={styles.header}>
@@ -34,8 +54,6 @@ function Header({ navigation }) {
     )
 }
 
-export default Header
-
 const styles = StyleSheet.create({
     header: {
         backgroundColor: colors.customBackground,
@@ -62,3 +80,6 @@ const styles = StyleSheet.create({
         height: 37
     }
 })
+
+
+export default TopHeader

@@ -5,40 +5,59 @@ import colors from '../config/colors'
 import { useAuthentication } from '../hooks/authentication'
 import MyButton from '../components/MyButton'
 import PageTemplate from '../components/PageTemplate'
-import { getLocalUser } from '../helpers/helperFunctions'
-import Spinner from '../components/spinner/Spinner'
+
+import Spinner from '../components/Spinner'
+import { set } from 'react-native-reanimated'
 
 function SignIn({ navigation }) {
 
-    const { control, handleSubmit, errors } = useForm()
+    const { control, handleSubmit, errors, setValue } = useForm()
     const [message, setMessage] = useState()
-    const { user, login } = useAuthentication()
+    const { getUser, isAdmin, login } = useAuthentication()
     const [isLoading, setIsLoading] = useState(false)
+    const [isMounted, setIsMounted] = useState(false)
 
     useEffect(() => {
 
-        checkLoggedIn()
+        setValue('username', 'admin@dropit.com', { shouldValidate: true })
+        setValue('password', 'password', { shouldValidate: true })
 
-        async function checkLoggedIn(params) {
-            const user = await getLocalUser()
+        setIsMounted(true)
+        // fetchUser()
+        // async function fetchUser() {
+        //     isMounted(true)
+        //     const user = await getUser()
+        //     if (user && isAdmin(user)) {
+        //         navigation.navigate('Home')
+        //     }
+        // }
 
-            if (user) {
-                navigation.navigate('Home')
-            }
-        }
-
-
+        return () => setIsMounted(false)
     }, [])
 
 
     const onSubmit = async data => {
 
         setIsLoading(true)
-        const result = await login(data.username, data.password)
+        const user = await login(data.username, data.password)
         setIsLoading(false)
 
-        if (result) {
-            navigation.navigate('Home')
+        if (!user) {
+            setMessage("Incorrect username or password")
+            return
+        }
+
+
+        if (user && !isAdmin(user)) {
+            setMessage("You have to login as an administrator")
+            return
+        }
+
+        if (user && isAdmin(user)) {
+            if (isMounted) {
+                navigation.push('Home')
+            }
+            return
         }
     }
 

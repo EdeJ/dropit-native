@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, View, StyleSheet } from 'react-native'
 import {
     useFonts,
     Comfortaa_400Regular
@@ -12,9 +12,8 @@ function PageTitle({ children }) {
         Comfortaa_400Regular
     })
 
-
     return (
-        <>
+        <View style={styles.center}>
             {fontsLoaded && (
                 <Text style={{
                     fontFamily: 'Comfortaa_400Regular',
@@ -25,8 +24,15 @@ function PageTitle({ children }) {
                     {children}
                 </Text>
             )}
-        </>
+        </View>
     )
 }
+
+const styles = StyleSheet.create({
+    center: {
+        alignItems: 'center'
+    }
+})
+
 
 export default PageTitle

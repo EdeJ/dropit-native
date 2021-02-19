@@ -1,21 +1,16 @@
 import React from 'react'
 import { StyleSheet, View, Image, Text } from 'react-native'
-// import { ReactComponent as LoaderIcon } from '../../assets/loading.svg'
-import colors from '../../config/colors'
-// import styles from './Spinner.module.css'
+import colors from '../config/colors'
 
 function Spinner({ message = 'loading...' }) {
 
     return (
         <View style={styles['spinner']}>
-            {/* <LoaderIcon /> */}
-            <Image source={require('../../assets/loader.gif')} style={styles.loadingIcon} />
+            <Image source={require('../assets/loader.gif')} style={styles.loadingIcon} />
             <Text style={styles.message}>{message}</Text>
         </View>
     )
 }
-
-export default Spinner
 
 const styles = StyleSheet.create({
     spinner: {
@@ -23,9 +18,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: colors.customBackground,
-        // position: fixed,
-        // top: 0,
-        // left: 0,
     },
     message: {
         color: colors.customBrown,
@@ -37,5 +29,7 @@ const styles = StyleSheet.create({
     }
 })
 
+
+export default Spinner
 
 

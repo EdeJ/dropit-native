@@ -9,17 +9,21 @@ export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null)
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    fetchLocalUser()
-    async function fetchLocalUser() {
-      const user = await getLocalUser()
-      setUser(user)
-    }
+  //   fetchLocalUser()
+  //   async function fetchLocalUser() {
+  //     const user = await getLocalUser()
+  //     setUser(user)
+  //   }
 
-  }, [])
+  // }, [])
 
-  function isAdmin() {
+  async function getUser() {
+    return await getLocalUser()
+  }
+
+  function isAdmin(user) {
     if (user) {
       return user.roles.includes(roles.ADMIN)
     }
@@ -39,10 +43,10 @@ export const AuthProvider = ({ children }) => {
       newUser.accessToken = 'Bearer ' + response.data.accessToken
       newUser.roles = response.data.roles
 
-      setUser(newUser)
+      // setUser(newUser)
       setLocalUser(newUser)
 
-      return true
+      return newUser
 
     } catch (error) {
       console.error(error)
@@ -52,8 +56,8 @@ export const AuthProvider = ({ children }) => {
   }
 
   const logout = async () => {
-    resetLocalUser()
-    setUser(null)
+    return await resetLocalUser()
+    // setUser(null)
   }
 
   return (
@@ -62,7 +66,7 @@ export const AuthProvider = ({ children }) => {
         isAdmin,
         login,
         logout,
-        user
+        getUser
       }}
     >
       {children}

@@ -18,7 +18,7 @@ function MyButton({ handleClick, children }) {
 const styles = StyleSheet.create({
     button: {
         backgroundColor: colors.customGreen,
-        height: 40,
+        height: 50,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center',

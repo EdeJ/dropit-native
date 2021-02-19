@@ -7,7 +7,9 @@ export const axiosConfig = axios.create({
 
 export const getAllUsers = async () => {
     try {
-        return await axiosConfig.get('/api/users/')
+        return await axiosConfig.get('/api/users/',
+            { headers: { Authorization: await getAccessToken() } }
+        )
     } catch (error) {
         console.log(error)
     }

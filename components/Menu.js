@@ -1,18 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native'
 import colors from '../config/colors'
-import { resetLocalUser } from '../helpers/helperFunctions'
 import { useAuthentication } from '../hooks/authentication'
 
 const { width, height } = Dimensions.get('window')
 
-function Menu({ setUser, setShowMenu, navigation }) {
+function Menu({ navigation }) {
 
-    const { user, logout } = useAuthentication()
+    const { getUser, logout } = useAuthentication()
+    const [user, setUser] = useState()
 
-    const signOut = () => {
-        logout()
-        navigation.navigate('Home')
+    useEffect(() => {
+
+        fetchUser()
+        async function fetchUser() {
+            const user = await getUser()
+            setUser(user)
+        }
+    }, [])
+
+    const signOut = async () => {
+        console.log('sign-out')
+        setUser(null)
+        await logout()
+        navigation.push('Home')
     }
 
     return (
@@ -65,8 +76,6 @@ function Menu({ setUser, setShowMenu, navigation }) {
     )
 }
 
-export default Menu
-
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.customBackground,
@@ -102,3 +111,4 @@ const styles = StyleSheet.create({
     }
 })
 
+export default Menu

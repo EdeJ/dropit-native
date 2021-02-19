@@ -4,6 +4,7 @@ import TopHeader from '../components/TopHeader'
 import colors from '../config/colors'
 
 function PageTemplate({ children, navigation }) {
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="auto" />
@@ -23,6 +24,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.customBackground,
     },
     page: {
+        // alignItems: 'center',
         padding: 20
     }
 })

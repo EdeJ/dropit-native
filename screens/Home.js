@@ -1,31 +1,46 @@
-import React from 'react'
-import { View, Text, Button } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text } from 'react-native'
 import MyButton from '../components/MyButton'
 import PageTemplate from '../components/PageTemplate'
 import PageTitle from '../components/PageTitle'
+import Spinner from '../components/Spinner'
 import { useAuthentication } from '../hooks/authentication'
 
 function Home({ navigation }) {
 
-    const { user } = useAuthentication()
+    const { getUser, isAdmin } = useAuthentication()
+    const [user, setUser] = useState()
+
+    useEffect(() => {
+        fetchUser()
+        async function fetchUser() {
+            const user = await getUser()
+            if (user && isAdmin(user)) {
+                setUser(user)
+            }
+        }
+    }, [])
 
     return (
         <PageTemplate navigation={navigation}>
             <PageTitle>"Now Give Me A Beat!"</PageTitle>
             {user ? (
-                <MyButton
-                    handleClick={() => navigation.navigate('AllDemos')}
-                >
-                    All demos
-                </MyButton>
-            ) : (
+                <View>
                     <MyButton
-                        handleClick={() => navigation.navigate('SignIn')}
+                        handleClick={() => navigation.navigate('AllDemos')}
                     >
-                        Sign In
+                        All demos
                     </MyButton>
+                </View>
+            ) : (
+                    <View>
+                        <MyButton
+                            handleClick={() => navigation.navigate('SignIn')}
+                        >
+                            Sign In
+                        </MyButton>
+                    </View>
                 )}
-
         </PageTemplate>
 
     )

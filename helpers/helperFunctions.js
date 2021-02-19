@@ -27,6 +27,6 @@ export async function getAccessToken() {
 }
 
 export async function resetLocalUser() {
-    await localStorage.removeItem('user')
+    return await localStorage.removeItem('user')
 
 }
