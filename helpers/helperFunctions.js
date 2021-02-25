@@ -1,12 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { Platform } from 'react-native'
-
-// if (Platform.OS === 'android') {
-//     const localStorage = AsyncStorage
-// }
-// if (Platform.OS === 'ios') {
-//     const localStorage = AsyncStorage
-// }
 
 const localStorage = AsyncStorage
 

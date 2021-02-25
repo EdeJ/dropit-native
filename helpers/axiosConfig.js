@@ -46,7 +46,17 @@ export const getAllDemos = async () => {
 
 export const getDemoById = async (demoId) => {
     try {
-        return await axiosConfig.get(`/api/demos/${demoId}`)
+        return await axiosConfig.get(`/api/demos/${demoId}`,
+            { headers: { Authorization: await getAccessToken() } })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getFile = async (fileName) => {
+    try {
+        return await axiosConfig.get(`/api/files/${fileName}`,
+            { headers: { Authorization: await getAccessToken() } })
     } catch (error) {
         console.log(error)
     }

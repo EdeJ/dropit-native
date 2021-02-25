@@ -7,24 +7,16 @@ function TopHeader({ navigation }) {
 
     const { getUser, isAdmin } = useAuthentication()
     const [user, setUser] = useState()
-    // const [isMounted, setIsMounted] = useState(true)
-
-    // let isMounted = true;
 
     useEffect(() => {
 
         fetchUser()
         async function fetchUser() {
-            // setIsMounted(true)
             const user = await getUser()
-            // if (isMounted) {
             if (user && isAdmin(user)) {
                 setUser(user)
             }
-            // }
         }
-
-        // return () => isMounted = false
     }, [])
 
     return (

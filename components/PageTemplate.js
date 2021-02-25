@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.customBackground,
     },
     page: {
-        // alignItems: 'center',
         padding: 20
     }
 })

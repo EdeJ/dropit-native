@@ -5,15 +5,14 @@ import colors from '../config/colors'
 import { useAuthentication } from '../hooks/authentication'
 import MyButton from '../components/MyButton'
 import PageTemplate from '../components/PageTemplate'
-
 import Spinner from '../components/Spinner'
-import { set } from 'react-native-reanimated'
+
 
 function SignIn({ navigation }) {
 
     const { control, handleSubmit, errors, setValue } = useForm()
     const [message, setMessage] = useState()
-    const { getUser, isAdmin, login } = useAuthentication()
+    const { isAdmin, login } = useAuthentication()
     const [isLoading, setIsLoading] = useState(false)
     const [isMounted, setIsMounted] = useState(false)
 
@@ -23,14 +22,6 @@ function SignIn({ navigation }) {
         setValue('password', 'password', { shouldValidate: true })
 
         setIsMounted(true)
-        // fetchUser()
-        // async function fetchUser() {
-        //     isMounted(true)
-        //     const user = await getUser()
-        //     if (user && isAdmin(user)) {
-        //         navigation.navigate('Home')
-        //     }
-        // }
 
         return () => setIsMounted(false)
     }, [])

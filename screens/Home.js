@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import MyButton from '../components/MyButton'
 import PageTemplate from '../components/PageTemplate'
 import PageTitle from '../components/PageTitle'
-import Spinner from '../components/Spinner'
 import { useAuthentication } from '../hooks/authentication'
 
 function Home({ navigation }) {

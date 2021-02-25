@@ -1,4 +1,4 @@
-import React, { useState, useContext, createContext, useEffect } from "react"
+import React, { useContext, createContext } from "react"
 import { axiosConfig } from "../helpers/axiosConfig"
 import { setLocalUser, getLocalUser, resetLocalUser } from "../helpers/helperFunctions"
 import { roles } from "../helpers/roles"
@@ -6,18 +6,6 @@ import { roles } from "../helpers/roles"
 const AuthContext = createContext({})
 
 export const AuthProvider = ({ children }) => {
-
-  const [user, setUser] = useState(null)
-
-  // useEffect(() => {
-
-  //   fetchLocalUser()
-  //   async function fetchLocalUser() {
-  //     const user = await getLocalUser()
-  //     setUser(user)
-  //   }
-
-  // }, [])
 
   async function getUser() {
     return await getLocalUser()
@@ -43,7 +31,6 @@ export const AuthProvider = ({ children }) => {
       newUser.accessToken = 'Bearer ' + response.data.accessToken
       newUser.roles = response.data.roles
 
-      // setUser(newUser)
       setLocalUser(newUser)
 
       return newUser
@@ -57,7 +44,6 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     return await resetLocalUser()
-    // setUser(null)
   }
 
   return (
