@@ -43,31 +43,36 @@ function AllDemos({ navigation }) {
     return (
         <PageTemplate navigation={navigation}>
             <PageTitle>All Demos</PageTitle>
-            {allUsers && (
-                <ScrollView style={styles.allDemo}>
-                    {allUsers.map(user => (
-                        <View key={user.userId}>
-                            {user.demos.length > 0 && (
-                                <View>
-                                    <Text style={styles.user} >User: {user.username}</Text>
-                                    {user.demos.map(demo => (
-                                        <View key={demo.id} style={styles.card}>
-                                            <Text style={styles.demoText} >{demo.songTitle}</Text>
-                                        </View>
-                                    ))}
-                                </View>
-                            )}
-                        </View>
-                    ))}
-                </ScrollView>
-            )}
+            <View style={styles.list}>
+                {allUsers && (
+                    <ScrollView style={styles.allDemosView}>
+                        {allUsers.map(user => (
+                            <View key={user.userId}>
+                                {user.demos.length > 0 && (
+                                    <View>
+                                        <Text style={styles.user} >User: {user.username}</Text>
+                                        {user.demos.map(demo => (
+                                            <View key={demo.id} style={styles.card}>
+                                                <Text style={styles.demoText} >{demo.songTitle}</Text>
+                                            </View>
+                                        ))}
+                                    </View>
+                                )}
+                            </View>
+                        ))}
+                    </ScrollView>
+                )}
+            </View>
         </PageTemplate>
     )
 }
 
 const styles = StyleSheet.create({
-    allDemo: {
+    allDemosView: {
         paddingTop: 20,
+        paddingBottom: 60
+    },
+    list: {
         paddingBottom: 60
     },
     user: {

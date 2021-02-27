@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.customBackground,
     },
     page: {
-        padding: 20
+        paddingTop: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 80
     }
 })
