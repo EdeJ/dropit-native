@@ -18,9 +18,6 @@ function SignIn({ navigation }) {
 
     useEffect(() => {
 
-        setValue('username', 'admin@dropit.com', { shouldValidate: true })
-        setValue('password', 'password', { shouldValidate: true })
-
         setIsMounted(true)
 
         return () => setIsMounted(false)
